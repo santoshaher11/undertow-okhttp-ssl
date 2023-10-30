@@ -1,0 +1,21 @@
+
+
+KEYSTORE=my-keystore.jks
+TRUSTSTORE=my-truststore.ts
+CERT=my-client.cer
+
+rm my-keystore.jks
+rm my-client.cer
+rm my-truststore.ts
+
+# these passwords must be copied to the private config file(s)
+KEYSTORE_STOREPASS=password1
+KEYSTORE_KEYPASS=password2
+TRUSTSTORE_STOREPASS=password3
+
+keytool -genkey -alias cucumber-poc -keyalg RSA -keystore my-keystore.jks -dname "cn=localhost, ou=IT, o=Continuent, c=US" -storepass password1 -keypass password2
+
+# enter the *KEYSTORE_STOREPASS* when prompted
+keytool -export -alias cucumber-poc -file my-client.cer -keystore my-keystore.jks
+
+keytool -import -trustcacerts -alias cucumber-poc -file my-client.cer -keystore my-truststore.ts -storepass password3 -noprompt
